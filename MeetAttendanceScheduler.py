@@ -13,6 +13,7 @@ import eel
 import os
 import tkinter.filedialog
 import atexit
+import sys
 
 driver_path = './chromedriver.exe'
 
@@ -122,6 +123,14 @@ def set_value(args):
     return args
 
 
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.dirname(__file__)
+    return os.path.join(base_path, relative_path)
+
+
 def setup():
     global open_window
     opt = Options()
@@ -139,7 +148,7 @@ def setup():
         "profile.default_content_setting_values.notifications": 1
     })
     eel.show_log('Driver Open')
-    return webdriver.Chrome(executable_path=driver_path, options=opt)
+    return webdriver.Chrome(executable_path=resource_path(driver_path), options=opt)
 
 
 def login_google():
