@@ -4,8 +4,8 @@ Emulator that enters and exits the Meet Room at the set time
 ![image](https://user-images.githubusercontent.com/35593328/103122505-dd484480-46c3-11eb-857c-12a96080f539.png)
 
 # Installation
-1. Go to [Releases](https://github.com/Asalato/MeetAttendanceScheduler/releases) and download the .zip file from the latest release
-1. Unzip the file and run `MeetAttendanceScheduler.exe`
+1. Go to [Releases](https://github.com/Asalato/MeetAttendanceScheduler/releases) and download the . file from the latest release
+1. run `MeetAttendanceScheduler.exe`
 
 # Usage
 1. (`Google Information`) Enter the email address and password of the Google account you want to sign in
