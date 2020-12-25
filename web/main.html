@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meet Auto Scheduler</title>
+    <script type="text/javascript" src="eel.js"></script>
+    <script type="text/javascript" src="./js/index.js"></script>
+    <link rel="stylesheet" href="./css/index.css" />
+</head>
+<body>
+<div class="header">
+    <h1>Meet Attendance Scheduler</h1>
+    <div class="sbs">
+        <button onclick="save_file()" id="save_identifier">Save Identifier</button>
+        <button onclick="load_file()" id="load_identifier">Load Identifier</button>
+    </div>
+</div>
+<div class="content">
+    <div class="info">
+        <h2>Google Information</h2>
+        <div class="inner_content">
+            <div class="sbs">
+                <h3>Google Email</h3>
+                <input type="email" id="login_id">
+            </div>
+            <div class="sbs">
+                <h3>Password</h3>
+                <input type="password" id="login_pw">
+            </div>
+        </div>
+    </div>
+    <div class="info">
+        <h2>Room Information</h2>
+        <div class="inner_content">
+            <div class="sbs">
+                <h3>Meet URL</h3>
+                <input type="text" id="meet_room">
+            </div>
+            <div class="sbs">
+                <h3>Login Time</h3>
+                <div>
+                    <input type="date" id="login_date">
+                    <input type="time" id="login_time">
+                </div>
+            </div>
+            <div class="sbs">
+                <h3>Logout Time</h3>
+                <div>
+                    <input type="date" id="logout_date">
+                    <input type="time" id="logout_time">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="open_type">
+        <input type="checkbox" id="open_checkbox" onchange="switch_mute_disabled(this)">
+        <h3>Show Window</h3>
+        <input type="checkbox" id="mute_checkbox">
+        <h3>Mute Audio</h3>
+    </div>
+    <div id="submit">
+        <button onclick="start_system()" id="submit_button">Start</button>
+        <button onclick="stop_system()" id="stop_button">Stop</button>
+    </div>
+    <div id="status_log">
+        <h3 id="log"></h3>
+    </div>
+</div>
+</body>
+</html>

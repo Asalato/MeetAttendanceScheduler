@@ -1,0 +1,97 @@
+.content{
+    margin: 0pt 10pt 10pt 10pt;
+    font-family: arial,sans-serif;
+    color: #202124;
+}
+
+.info{
+    padding-bottom: 5pt;
+}
+
+.inner_content{
+    padding: 0pt 0pt 0pt 20pt;
+}
+
+h1{
+    text-align: center;
+    margin: 4pt 0pt 4pt 0pt;
+    font-size: xx-large;
+}
+
+h2{
+    font-size: x-large;
+    margin: 4pt 0pt 4pt 0pt;
+}
+
+h3{
+    font-size: large;
+    margin: 5pt 0pt 2pt 0pt;
+}
+
+input{
+    width: 200pt;
+    font-size: large;
+    text-align: center;
+}
+
+input[type=time]{
+    width: 75pt;
+}
+
+input[type=date]{
+    width: 120pt;
+}
+
+.sbs{
+    display: flex;
+    margin: 5pt;
+    justify-content: space-between;
+}
+
+#submit{
+    display: flex;
+    justify-content: center;
+}
+
+#submit{
+    margin-top: 5pt;
+}
+
+#submit > button {
+    font-size: x-large;
+    margin: 0pt 10pt 0pt 10pt;
+}
+
+#status_log{
+    text-align: center;
+    font-size: large;
+}
+
+.header{
+    padding: 5pt 5pt 5pt 5pt;
+}
+
+.header > .sbs{
+    justify-content: center;
+    font-size: small;
+    margin: 0pt;
+}
+
+.header button{
+    margin: 0pt 2pt 0pt 2pt;
+}
+
+#open_type{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding-bottom: 5pt;
+}
+
+#open_type > input{
+    width: auto;
+}
+
+#open_type > h3{
+    margin: 0 15pt 0 5pt;
+}
