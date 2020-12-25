@@ -33,19 +33,29 @@ mute_window = True
 scheduler = sched.scheduler(time.time, time.sleep)
 login_sd = None
 logout_sd = None
+check_sd = None
 is_login = False
 driver = None
+
+use_date = True
+use_Number = False
+max_room_number = 0
+logout_rate = 50
+type_or = True
 
 
 @eel.expose
 def reset_system():
-    global scheduler, login_sd, logout_sd, is_login, driver
+    global scheduler, login_sd, logout_sd, check_sd, is_login, driver
     if login_sd is not None and not scheduler.empty():
         scheduler.cancel(login_sd)
         login_sd = None
     if logout_sd is not None and not scheduler.empty():
         scheduler.cancel(logout_sd)
         logout_sd = None
+    if check_sd is not None and not scheduler.empty():
+        scheduler.cancel(check_sd)
+        check_sd = None
     if is_login and driver is not None:
         logout_meet()
         is_login = False
@@ -93,7 +103,7 @@ def save_data(args):
 
 @eel.expose
 def set_value(args):
-    global login_id, login_pw, meet_room, login_time, logout_time, open_window, mute_window
+    global login_id, login_pw, meet_room, login_time, logout_time, open_window, mute_window, use_date, use_Number, logout_rate, type_or
     login_id = args[0]
     login_pw = args[1]
     if login_id == "" or login_pw == "":
@@ -107,9 +117,6 @@ def set_value(args):
         return False
     meet_room = removed_url
 
-    if args[3] == "" or args[4] == "" or args[5] == "" or args[6] == "":
-        eel.show_log_error('Load Failed: Target Time Null')
-        return False
     year, month, day = map(int, args[3].split('-'))
     hour, min = map(int, args[4].split(':'))
     login_time = datetime(year, month, day, hour, min, 0)
@@ -119,6 +126,11 @@ def set_value(args):
 
     open_window = args[7]
     mute_window = args[8]
+
+    use_date = args[9]
+    use_Number = args[10]
+    logout_rate = int(args[11])
+    type_or = args[12]
     eel.show_log('Load Success')
     return args
 
@@ -177,15 +189,20 @@ def login_google():
 
 
 def login_meet():
-    global is_login, driver, meet_url, meet_room
+    global is_login, driver, meet_url, meet_room, use_Number, use_date, logout_rate, type_or
     if driver is None:
         return
     TIME_OUT = 5
-    eel.show_log(f'Access Meet Room: ID "{meet_room}"')
+    eel.show_log(f'Access Meet Room: ID "{meet_room}"<br>Now preparing to enter the room...(1/4)')
     driver.get(meet_url + meet_room)
     eel.sleep(1)
+    eel.show_log(f'Access Meet Room: ID "{meet_room}"<br>Now preparing to enter the room...(2/4)')
     driver.get(meet_url + meet_room)
     eel.sleep(1)
+    eel.show_log(f'Access Meet Room: ID "{meet_room}"<br>Now preparing to enter the room...(3/4)')
+    driver.get(meet_url + meet_room)
+    eel.sleep(1)
+    eel.show_log(f'Access Meet Room: ID "{meet_room}"<br>Now preparing to enter the room...(4/4)')
     WebDriverWait(driver, TIME_OUT).until(
         EC.presence_of_element_located((By.XPATH, '/html/body'))
     ).send_keys(Keys.CONTROL, "de")
@@ -209,11 +226,18 @@ def login_meet():
         for entry in driver.get_log('browser'):
             print(entry)
         return
-    eel.show_log('Login Success<br>Wait Logout at ' + logout_time.strftime('%Y/%m/%d %H:%M'))
+    message = 'Login Success'
+    if use_date:
+        message = message + '<br>Wait Logout at ' + logout_time.strftime('%Y/%m/%d %H:%M')
+    if use_date and use_Number:
+        message = message + (' or ' if type_or else ' and ')
+    if use_Number:
+        message = message + 'Wait Participant number Less than ' + str(logout_rate) + '% of the maximum number'
+    eel.show_log(message)
 
 
 def logout_meet():
-    global is_login, driver
+    global is_login, driver, type_or
     if driver is None:
         return
     driver.refresh()
@@ -235,16 +259,42 @@ def run_at_target_time(target: datetime, func):
         return None
 
 
+def check_room_number():
+    global max_room_number, type_or, scheduler, check_sd, driver
+    current_room_number = int(driver.find_element_by_xpath('//*[@id="ow3"]/div[1]/div/div[8]/div[3]/div[6]/div[3]/div/div[2]/div[1]/span/span/div/div/span[2]').get_attribute('innerHTML'))
+    if current_room_number > max_room_number:
+        max_room_number = current_room_number
+    elif max_room_number * logout_rate / 100 >= current_room_number:
+        if type_or:
+            logout_meet()
+            return
+        else:
+            type_or = True
+    check_sd = scheduler.enter(1, 1, check_room_number)
+    scheduler.run()
+
+
+def complete_date():
+    global type_or
+    if type_or:
+        logout_meet()
+    else:
+        type_or = True
+
+
 @eel.expose
 def start_system():
-    global login_sd, logout_sd, driver, login_time, logout_time
+    global login_sd, logout_sd, check_sd, driver, login_time, logout_time, scheduler
     driver = setup()
     login_google()
     login_sd = run_at_target_time(login_time, login_meet)
-    logout_sd = run_at_target_time(logout_time, logout_meet)
+    if use_date:
+        logout_sd = run_at_target_time(logout_time, complete_date)
+    if use_Number:
+        check_sd = scheduler.enter(1, 1, check_room_number)
     threading.Thread(target=scheduler.run).start()
 
 
 atexit.register(reset_system)
 eel.init('web')
-eel.start('main.html', size=(525, 545), port=0)
+eel.start('main.html', size=(560, 680), port=0)

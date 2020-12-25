@@ -1,4 +1,8 @@
 window.onload = function(){
+    document.getElementById('use_date').checked = true;
+    document.getElementById('logout_or').setAttribute('disabled', true);
+    document.getElementById('logout_and').setAttribute('disabled', true);
+
     document.getElementById('stop_button').setAttribute("disabled", true);
     document.getElementById('mute_checkbox').setAttribute("disabled", true);
     document.getElementById('mute_checkbox').checked = true;
@@ -56,7 +60,11 @@ async function start_system() {
     const logout_time = document.getElementById('logout_time').value;
     const open_window = document.getElementById('open_checkbox').checked;
     const mute_window = document.getElementById('mute_checkbox').checked;
-    let status = await eel.set_value([login_id, login_pw, meet_room, login_date, login_time, logout_date, logout_time, open_window, mute_window])();
+    const use_date = document.getElementById('use_date').checked;
+    const use_number = document.getElementById('use_number').checked;
+    const logout_rate = document.getElementById('logout_rate').value;
+    const type_or = is_or || !(use_date && use_number);
+    let status = await eel.set_value([login_id, login_pw, meet_room, login_date, login_time, logout_date, logout_time, open_window, mute_window, use_date, use_number, logout_rate, type_or])();
     if(status){
         eel.start_system();
         document.getElementById('submit_button').setAttribute("disabled", true);
@@ -64,6 +72,34 @@ async function start_system() {
         document.getElementById('load_identifier').setAttribute("disabled", true);
         document.getElementById('stop_button').removeAttribute("disabled");
     }
+}
+
+let is_or = true;
+function use_number() {
+    if(document.getElementById('use_number').checked && document.getElementById('use_date').checked){
+        if(!is_or){
+            document.getElementById('logout_or').removeAttribute('disabled');
+            document.getElementById('logout_and').setAttribute('disabled', true);
+        }else{
+            document.getElementById('logout_or').setAttribute('disabled', true);
+            document.getElementById('logout_and').removeAttribute('disabled');
+        }
+    }else{
+        document.getElementById('logout_or').setAttribute('disabled', true);
+        document.getElementById('logout_and').setAttribute('disabled', true);
+    }
+}
+
+function toggle_or(){
+    if(is_or){
+        document.getElementById('logout_or').removeAttribute('disabled');
+        document.getElementById('logout_and').setAttribute('disabled', true);
+    }
+    else{
+        document.getElementById('logout_or').setAttribute('disabled', true);
+        document.getElementById('logout_and').removeAttribute('disabled');
+    }
+    is_or = !is_or;
 }
 
 function stop_system(){

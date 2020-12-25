@@ -25,7 +25,12 @@ h2{
 
 h3{
     font-size: large;
-    margin: 5pt 0pt 2pt 0pt;
+    margin: 0;
+}
+
+h4{
+    font-size: medium;
+    margin: 0;
 }
 
 input{
@@ -42,6 +47,10 @@ input[type=date]{
     width: 120pt;
 }
 
+.vali input{
+    width: 100pt;
+}
+
 .sbs{
     display: flex;
     margin: 5pt;
@@ -54,7 +63,7 @@ input[type=date]{
 }
 
 #submit{
-    margin-top: 5pt;
+    margin: 5pt 0 5pt 0;
 }
 
 #submit > button {
@@ -69,6 +78,18 @@ input[type=date]{
 
 .header{
     padding: 5pt 5pt 5pt 5pt;
+    display: initial;
+}
+
+.header > h1{
+    text-shadow: white 0 0 10pt, white 0 0 10pt, white 0 0 10pt, white 0 0 10pt, white 0 0 10pt;
+}
+
+.header > img {
+    position: absolute;
+    width: 60pt;
+    height: 60pt;
+    z-index: -1;
 }
 
 .header > .sbs{
@@ -94,4 +115,42 @@ input[type=date]{
 
 #open_type > h3{
     margin: 0 15pt 0 5pt;
+}
+
+.vali{
+    display: flex;
+    margin: 0;
+    justify-content: space-between;
+    flex-direction: column;
+    width: 200pt;
+}
+
+.vali > .sbs{
+    margin: 0 0 5pt 0;
+}
+
+.vali input{
+    display: flex;
+}
+
+.vali input[type="checkbox"]{
+    width: auto;
+}
+
+.next{
+    justify-content: center;
+    margin: 0;
+}
+
+.vali h4{
+    width: max-content;
+}
+
+.vali > .tog{
+    margin-top: 5pt;
+    justify-content: center;
+}
+
+.tog button{
+    margin: 0 10pt 0 10pt;
 }

@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Meet Auto Scheduler</title>
+    <title>Meet Attendance Scheduler</title>
     <script type="text/javascript" src="eel.js"></script>
     <script type="text/javascript" src="./js/index.js"></script>
     <link rel="stylesheet" href="./css/index.css" />
 </head>
 <body>
 <div class="header">
+    <img src="images/icon.png">
     <h1>Meet Attendance Scheduler</h1>
     <div class="sbs">
         <button onclick="save_file()" id="save_identifier">Save Identifier</button>
@@ -44,10 +45,29 @@
                 </div>
             </div>
             <div class="sbs">
-                <h3>Logout Time</h3>
-                <div>
-                    <input type="date" id="logout_date">
-                    <input type="time" id="logout_time">
+                <h3>Logout Conditions</h3>
+                <div class="vali">
+                    <div class="sbs">
+                        <div class="sbs next">
+                            <input type="checkbox" id="use_date" onclick="use_number()">
+                            <h4>Time</h4>
+                        </div>
+                        <div>
+                            <input type="date" id="logout_date">
+                            <input type="time" id="logout_time">
+                        </div>
+                    </div>
+                    <div class="sbs">
+                        <div class="sbs next">
+                            <input type="checkbox" id="use_number" onclick="use_number()">
+                            <h4>Number Rate</h4>
+                        </div>
+                        <input type="range" id="logout_rate">
+                    </div>
+                    <div class="sbs tog">
+                        <button id="logout_or" onclick="toggle_or()">OR</button>
+                        <button id="logout_and" onclick="toggle_or()">AND</button>
+                    </div>
                 </div>
             </div>
         </div>
